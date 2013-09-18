@@ -1,0 +1,155 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/textView2"
+        android:max="100"
+        android:progress="25" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_alignRight="@+id/toggleButton2"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="30dp"
+        android:onClick="onToggle1Clicked"
+        android:text="ToggleButton"
+        android:textOff="OFF"
+        android:textOn="ON" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/toggleButton1"
+        android:onClick="onToggle2Clicked"
+        android:text="ToggleButton"
+        android:textOff="OFF"
+        android:textOn="ON" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/toggleButton2"
+        android:onClick="onToggle3Clicked"
+        android:text="ToggleButton"
+        android:textOff="OFF"
+        android:textOn="ON"
+        android:textStyle="normal" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/toggleButton3"
+        android:onClick="onToggle4Clicked"
+        android:text="ToggleButton"
+        android:textOff="OFF"
+        android:textOn="ON" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/toggleButton1"
+        android:layout_alignRight="@+id/seekBar1"
+        android:layout_alignTop="@+id/toggleButton1"
+        android:layout_toRightOf="@+id/toggleButton1"
+        android:text="Relay 1" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/toggleButton2"
+        android:layout_alignRight="@+id/editText1"
+        android:layout_alignTop="@+id/toggleButton2"
+        android:layout_toRightOf="@+id/toggleButton2"
+        android:text="Relay 2" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/editText2"
+        android:layout_alignTop="@+id/toggleButton3"
+        android:layout_toRightOf="@+id/toggleButton3"
+        android:text="Night Lamp 1" />
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText3"
+        android:layout_alignRight="@+id/editText3"
+        android:layout_below="@+id/toggleButton3"
+        android:text="Night Lamp 2" />
+
+    <EditText
+        android:id="@+id/http_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/seekBar1"
+        android:layout_alignRight="@+id/editText4"
+        android:layout_below="@+id/editText4"
+        android:onClick="onAddressUrlClicked"
+        android:hint="HA service HTTP address"
+        android:inputType="textUri" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText4"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/seekBar1"
+        android:layout_below="@+id/networkStatus"
+        android:layout_marginLeft="22dp"
+        android:text="TextView" />
+
+    <SeekBar
+        android:id="@+id/seekBar1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/toggleButton4"
+        android:layout_below="@+id/http_address"
+        android:max="100"
+        android:maxHeight="40dp"
+        android:progress="25" />
+
+    <TextView
+        android:id="@+id/networkStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignRight="@+id/seekBar1"
+        android:layout_below="@+id/seekBar1"
+        android:text="TextView" />
+
+</RelativeLayout>
