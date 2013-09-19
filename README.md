@@ -23,5 +23,5 @@ Screenshot
 
 APK Android application for install (currently supported only older system Android 2.1)
 -----------
-[![HomeAutomation.apk](https://github.com/bieli/home_automat__android_and_arduino/tree/master/bin/HomeAutomation.apk)]
+[![HomeAutomation.apk](https://github.com/bieli/home_automat__android_and_arduino/raw/master/bin/HomeAutomation.apk)]
 
