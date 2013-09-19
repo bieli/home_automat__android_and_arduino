@@ -18,10 +18,13 @@ Use case description
  
 Screenshot
 -----------
-![application screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/home-automat.png)
+![application screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/home-automat.1.png)
+
+![application screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/home-automat.2.png)
 
 
 APK Android application for install (currently supported only older system Android 2.1)
 -----------
-[![HomeAutomation.apk](https://github.com/bieli/home_automat__android_and_arduino/raw/master/bin/HomeAutomation.apk)]
+![HOME AUTOMAT APK Icon](https://raw.github.com/bieli/home_automat__android_and_arduino/master/res/drawable-xhdpi/ic_launcher.png)
+[![Install by click - HomeAutomation.apk](https://github.com/bieli/home_automat__android_and_arduino/raw/master/bin/HomeAutomation.apk)]
 

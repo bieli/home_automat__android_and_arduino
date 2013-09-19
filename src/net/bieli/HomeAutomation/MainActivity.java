@@ -1,7 +1,5 @@
 package net.bieli.HomeAutomation;
 
-//import java.util.logging.ConsoleHandler;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -12,15 +10,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ToggleButton;
 
-
-//import java.net.URI;
-
-// for internet connectivity state info
-//import android.net.ConnectivityManager;
-//import android.content.IntentFilter;
-
 import net.bieli.HomeAutomation.R;
-
 import net.bieli.HomeAutomation.NetworkChangeReceiver;
 import net.bieli.HomeAutomation.HAService;
 import net.bieli.HomeAutomation.HAMessage;
@@ -44,7 +34,6 @@ public class MainActivity extends Activity {
 	private String ServicveUrl = "";
 
 	private NetworkChangeReceiver receiver;
-//	private TextView networkStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,74 +51,23 @@ public class MainActivity extends Activity {
 		this.haService = new HAService();
 
 		this.haService.setUri(ServicveUrl);
-		this.haService.setLoggerTag(LOG_TAG);
-		
-
-/*
-//TODO: add notification about internet connection 
-		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-		receiver = new NetworkChangeReceiver();
-		registerReceiver(receiver, filter);
-		
-		networkStatus = (TextView) findViewById(R.id.networkStatus);
-*/
-
-/*
-        String address = "http://192.168.1.10/ap.php";
-        HttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost(address);
-
-        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-        pairs.add(new BasicNameValuePair("relay_1", "1"));
-        pairs.add(new BasicNameValuePair("relay_2", "0"));
-        pairs.add(new BasicNameValuePair("relay_3", "1"));
-        pairs.add(new BasicNameValuePair("relay_4", "1"));
-        post.setEntity(new UrlEncodedFormEntity(pairs));
-
-        HttpResponse response = client.execute(post);
-*/
-//        URI uri = (TextView)findViewById(R.id.http_address);
-//        http_address = (TextView)findViewById(R.id.http_address);
-
-//        sendMessage();
-//        boolean on = R.id.toggleButton2.isChecked();
-
-        //ToggleButton toggle = findViewById(R.id.toggleButton2);
-//        View view = findViewById(R.id.toggleButton2);
-        
-        //view.getContext()
-        
-        //onToggle2Clicked
-//        boolean on = true; //toggle.isChecked();
-/*
-        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The toggle is enabled
-                } else {
-                    // The toggle is disabled
-                }
-            }
-        });
-        boolean on = true;
-*/
-/*        
-        if (on) {
-            // Enable vibrate
-        } else {
-            // Disable vibrate
-        }
-*/
-      
-        
-//        R.id.textView1.setText("TEST");
+		this.haService.setLoggerTag(LOG_TAG);	
     }
 
 	@Override
 	protected void onDestroy() {
 		Log.v(LOG_TAG, "onDestory");
+
 		super.onDestroy();
-		unregisterReceiver(receiver);
+
+		try {
+			Log.v(LOG_TAG, "unregisterReceiver");
+
+			unregisterReceiver(receiver);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e(LOG_TAG, e.toString());
+		}
 	}
 
     public void onToggle1Clicked(View view) {
@@ -225,7 +163,6 @@ public class MainActivity extends Activity {
 					Toast.LENGTH_LONG
 					).show();		
 		} else {
-			//TODO: add Toaste error message, etc...
 			Toast.makeText(
 					getApplicationContext(), 
 					"Error -> when calling HAMessage()", 
