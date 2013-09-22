@@ -28,3 +28,14 @@ APK Android application for install (currently supported only older system Andro
 ![HOME AUTOMAT APK Icon](https://raw.github.com/bieli/home_automat__android_and_arduino/master/res/drawable-xhdpi/ic_launcher.png)
 [![Install by click - HomeAutomation.apk](https://github.com/bieli/home_automat__android_and_arduino/raw/master/bin/HomeAutomation.apk)]
 
+TODO
+----
+ * move resources into res subdirectory
+ * add some unit tests
+ * code refactoring
+  * AsyncTask for HAService call
+  * add interfaces
+  * add IoC for HAService (default injecting HttpHa, next Z-Wave, ZeeBee, etc...)
+ * home automation network discovering
+ * home automation network binding
+  

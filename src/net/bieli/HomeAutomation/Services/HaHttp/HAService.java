@@ -1,4 +1,4 @@
-package net.bieli.HomeAutomation;
+package net.bieli.HomeAutomation.Services.HaHttp;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Exception;
+
+import net.bieli.HomeAutomation.Services.HAMessageType;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -43,62 +45,16 @@ public class HAService {
 	public void setLoggerTag(String logTag) { 
 		this.logTag = logTag;
 	}
-	
+
 	public Boolean send(HAMessage message) {
-		Boolean status = true;
+		Boolean result = true;
 		String state = "";
-		
-		if (message.getState() == true) {
+
+		if (message.getMask() == 1) {
 			state = "1";			
 		} else {
 			state = "0";
 		} 
-		
-		switch (message.getBit()) {
-			case 0:
-				status = httpServiceRequest(state, "", "", "", "", "", "", "");
-				break;
-			case 1:
-				status = httpServiceRequest("", state, "", "", "", "", "", "");
-				break;
-			case 2:
-				status = httpServiceRequest("", "", state, "", "", "", "", "");
-				break;
-			case 3:
-				status = httpServiceRequest("", "", "", state, "", "", "", "");
-				break;
-			default:
-				logger.e(logTag, "Unknown BIT '" + message.getBit() + "' - NOT IMPLEMENTED !!!");
-				break;
-		}
-
-		return status;
-	}
-
-	/**
-	 * @deprecated NEED HARD REFACTORING !!!
-	 * 
-	 * @param relay_1_state
-	 * @param relay_2_state
-	 * @param relay_3_state
-	 * @param relay_4_state
-	 * @param relay_1_name
-	 * @param relay_2_name
-	 * @param relay_3_name
-	 * @param relay_4_name
-	 * @return
-	 */
-	private Boolean httpServiceRequest(
-			String relay_1_state,
-			String relay_2_state,
-			String relay_3_state,
-			String relay_4_state,
-			String relay_1_name,
-			String relay_2_name,
-			String relay_3_name,
-			String relay_4_name) {
-		
-		Boolean result = true;
 		
 		outputStringBuffer = new StringBuffer("");
 		
@@ -108,40 +64,34 @@ public class HAService {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost request = new HttpPost(getUri());
 		
-		request.addHeader("additional-header", "test-add-header-value");
+		request.addHeader("HA-SEND-MESAGE", "test-add-header-value");
 
 		List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-
-		if (relay_1_state.length() > 0) {
-			postParameters.add(new BasicNameValuePair("relay_1_state", relay_1_state));
+		
+		
+		switch (message.getMessageType()) {
+			case HAMessageType.SET_OUTPUT_DIGITAL:
+				break;
+			default:
+				logger.e(logTag, "Unknown MESSAGE_TYPE '" + message.getMessageType() + "' - NOT IMPLEMENTED !!!");
+				return false;
 		}
 
-		if (relay_2_state.length() > 0) {
-			postParameters.add(new BasicNameValuePair("relay_2_state", relay_2_state));
-		}
-
-		if (relay_3_state.length() > 0) {
-			postParameters.add(new BasicNameValuePair("relay_3_state", relay_3_state));
-		}
-
-		if (relay_4_state.length() > 0) {
-			postParameters.add(new BasicNameValuePair("relay_4_state", relay_4_state));
-		}
-
-		if (relay_1_name.length() > 0) {
-			postParameters.add(new BasicNameValuePair("relay_1_name", relay_1_name));
-		}
-
-		if (relay_2_name.length() > 0) {
-			postParameters.add(new BasicNameValuePair("relay_2_name", relay_2_name));
-		}
-
-		if (relay_3_name.length() > 0) {
-			postParameters.add(new BasicNameValuePair("relay_3_name", relay_3_name));
-		}
-
-		if (relay_4_name.length() > 0) {
-			postParameters.add(new BasicNameValuePair("relay_4_name", relay_4_name));
+		switch (message.getValue()) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+				postParameters.add(
+					new BasicNameValuePair(
+						"SET_OUTPUT_DIGITAL#" + message.getMessageType() + "#" + message.getValue(), 
+						state
+					)
+				);
+				break;
+			default:
+				logger.e(logTag, "Unknown BIT '" + message.getValue() + "' - NOT IMPLEMENTED !!!");
+				return false;
 		}
 
 		try {
@@ -198,6 +148,10 @@ public class HAService {
 		return result;
 	}
 
+	public int recive() {
+		return 0;
+	}
+	
 	public String getUri() {
 		return uri;
 	}

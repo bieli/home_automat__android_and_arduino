@@ -21,7 +21,8 @@
         android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/textView2"
         android:max="100"
-        android:progress="25" />
+        android:progress="25"
+        android:visibility="invisible" />
 
     <ToggleButton
         android:id="@+id/toggleButton1"
@@ -78,10 +79,7 @@
         android:layout_alignRight="@+id/seekBar1"
         android:layout_alignTop="@+id/toggleButton1"
         android:layout_toRightOf="@+id/toggleButton1"
-        android:text="Relay 1" >
-
-        <requestFocus />
-    </EditText>
+        android:text="Relay 1" />
 
     <EditText
         android:id="@+id/editText2"
@@ -141,7 +139,8 @@
         android:layout_below="@+id/http_address"
         android:max="100"
         android:maxHeight="40dp"
-        android:progress="25" />
+        android:progress="25"
+        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/networkStatus"
@@ -150,6 +149,7 @@
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignRight="@+id/seekBar1"
         android:layout_below="@+id/seekBar1"
-        android:text="TextView" />
+        android:text="TextView"
+        android:visibility="invisible" />
 
 </RelativeLayout>

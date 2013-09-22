@@ -6,14 +6,13 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ToggleButton;
 
 import net.bieli.HomeAutomation.R;
-import net.bieli.HomeAutomation.NetworkChangeReceiver;
-import net.bieli.HomeAutomation.HAService;
-import net.bieli.HomeAutomation.HAMessage;
+import net.bieli.HomeAutomation.Services.HAMessageType;
+import net.bieli.HomeAutomation.Services.HaHttp.HAMessage;
+import net.bieli.HomeAutomation.Services.HaHttp.HAService;
 
 /**
  * MainActivity Android application class
@@ -21,33 +20,27 @@ import net.bieli.HomeAutomation.HAMessage;
  * @author Marcin Bielak <marcin.bieli@gmail.com>
  */
 public class MainActivity extends Activity {
-
 	private static final String LOG_TAG = "HA";
-
 	private static final String DEFAULT_URI = "http://192.168.1.5/ha.php";
-	
-	TextView result;
+	private String ServicveUrl = "";
 
+	TextView result;
 	HAMessage haMessage;
 	HAService haService; 
 
-	private String ServicveUrl = "";
-
-	private NetworkChangeReceiver receiver;
-
-    @Override
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-		Toast.makeText(getApplicationContext(), 
-		"Welcome in HA app ...", 
-		Toast.LENGTH_LONG).show();
+		Toast.makeText(
+			getApplicationContext(), 
+			"Welcome in HA app ...",
+			Toast.LENGTH_LONG
+		).show();
 		
 		setServicveUrl(DEFAULT_URI);
-		
 
-		this.haMessage = new HAMessage();
 		this.haService = new HAService();
 
 		this.haService.setUri(ServicveUrl);
@@ -59,15 +52,6 @@ public class MainActivity extends Activity {
 		Log.v(LOG_TAG, "onDestory");
 
 		super.onDestroy();
-
-		try {
-			Log.v(LOG_TAG, "unregisterReceiver");
-
-			unregisterReceiver(receiver);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Log.e(LOG_TAG, e.toString());
-		}
 	}
 
     public void onToggle1Clicked(View view) {
@@ -94,55 +78,61 @@ public class MainActivity extends Activity {
 
     	Log.v(LOG_TAG, "change URI -> '" + uri + "'");
     }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//	
+
 	private void setServicveUrl(String servicveUrl) {
 		final CharSequence text = servicveUrl.subSequence(0, servicveUrl.length());
 		
 		EditText EditTextUri = (EditText) findViewById(R.id.http_address);
 		EditTextUri.setText((CharSequence) text);
 
-		ServicveUrl = servicveUrl;
+		this.ServicveUrl = servicveUrl;
 	}
 
-
-	private void doHAServiceAction(View view, byte bit) {
-		// Is the toggle on?
+	private Boolean doHAServiceAction(View view, byte bit) {
         boolean on = ((ToggleButton) view).isChecked();
+        byte mask = 0;
+        
+        if (on) {
+        	mask = 1;
+        } else {
+        	mask = 0;
+        }
 
         view.setClickable(false);
         view.setEnabled(false);
-        
-        this.haMessage.setBit((byte) bit);
-        this.haMessage.setState(on);
 
-        view.setClickable(false);
+		haMessage = new HAMessage();
+
+		haMessage.setMessageType(HAMessageType.SET_OUTPUT_DIGITAL);
+		haMessage.setValue((byte) bit);
+		haMessage.setMask(mask);
+		haMessage.setRealValue(false);
+
         view.setEnabled(true);
-        
-        sendHAMessage();
+        view.setClickable(true);
+
+        return sendHAMessageForOutputDigital(haMessage);
 	}
 
-	private void sendHAMessage() {
+	private Boolean sendHAMessageForOutputDigital(HAMessage haMessage) {
+		if (haMessage.getMessageType() != HAMessageType.SET_OUTPUT_DIGITAL) {
+			return false;
+		}
+
 		result = (TextView)findViewById(R.id.textView2);
-		
+
 		Boolean status = this.haService.send(haMessage);
-		
+
 		if (status == true) {			
 			String onoff = "";
 			
-			if (haMessage.getState() == true) {
+			if (haMessage.getMask() == 1) {
 				onoff = "ON";
 			} else {
 				onoff = "OFF";
 			}
 			
-			onoff = "switch '" + haMessage.getBit() + "' -> '" + onoff + "'";
+			onoff = "switch '" + haMessage.getValue() + "' -> '" + onoff + "'";
 			
 			Log.v(LOG_TAG, onoff);
 			
@@ -151,17 +141,19 @@ public class MainActivity extends Activity {
 			result.setText(sb.toString());
 			
 			Toast.makeText(
-					getApplicationContext(), 
-					onoff,
-					Toast.LENGTH_LONG
-					).show();		
+				getApplicationContext(), 
+				onoff,
+				Toast.LENGTH_LONG
+			).show();		
 		} else {
 			Toast.makeText(
-					getApplicationContext(), 
-					"Error -> when calling HAMessage()", 
-					Toast.LENGTH_LONG
-					).show();
+				getApplicationContext(), 
+				"Error -> when calling HAMessage()", 
+				Toast.LENGTH_LONG
+			).show();
 		}
+		
+		return status;
 	}
 }
 
