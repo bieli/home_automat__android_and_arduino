@@ -18,9 +18,9 @@ Use case description
  
 Screenshot
 -----------
-![application screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/home-automat.1.png)
+![application screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/assets/home-automat.1.png)
 
-![application screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/home-automat.2.png)
+![application screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/assets/home-automat.2.png)
 
 
 APK Android application for install (currently supported only older system Android 2.1)
