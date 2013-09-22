@@ -71,45 +71,21 @@ public class MainActivity extends Activity {
 	}
 
     public void onToggle1Clicked(View view) {
-        // Is the toggle on?
-        boolean on = ((ToggleButton) view).isChecked();
-
-        this.haMessage.setBit((byte) 0);
-        this.haMessage.setState(on);
-        
-        sendHAMessage();
+        doHAServiceAction(view, (byte) 0);
     }
 
     public void onToggle2Clicked(View view) {
-        // Is the toggle on?
-        boolean on = ((ToggleButton) view).isChecked();
-
-        this.haMessage.setBit((byte) 1);
-        this.haMessage.setState(on);
-        
-        sendHAMessage();
+        doHAServiceAction(view, (byte) 1);
     }
 
     public void onToggle3Clicked(View view) {
-        // Is the toggle on?
-        boolean on = ((ToggleButton) view).isChecked();
-
-        this.haMessage.setBit((byte) 2);
-        this.haMessage.setState(on);
-        
-        sendHAMessage();
+        doHAServiceAction(view, (byte) 2);
     }
     
     public void onToggle4Clicked(View view) {
-        // Is the toggle on?
-        boolean on = ((ToggleButton) view).isChecked();
-
-        this.haMessage.setBit((byte) 3);
-        this.haMessage.setState(on);
-        
-        sendHAMessage();
+        doHAServiceAction(view, (byte) 3);
     }
-    
+
     public void onAddressUrlClicked(View view) {
 		EditText EditTextUri = (EditText) findViewById(R.id.http_address);
 		String uri = EditTextUri.getText().toString().trim();
@@ -118,14 +94,14 @@ public class MainActivity extends Activity {
 
     	Log.v(LOG_TAG, "change URI -> '" + uri + "'");
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-	
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.main, menu);
+//        return true;
+//    }
+//	
 	private void setServicveUrl(String servicveUrl) {
 		final CharSequence text = servicveUrl.subSequence(0, servicveUrl.length());
 		
@@ -133,6 +109,23 @@ public class MainActivity extends Activity {
 		EditTextUri.setText((CharSequence) text);
 
 		ServicveUrl = servicveUrl;
+	}
+
+
+	private void doHAServiceAction(View view, byte bit) {
+		// Is the toggle on?
+        boolean on = ((ToggleButton) view).isChecked();
+
+        view.setClickable(false);
+        view.setEnabled(false);
+        
+        this.haMessage.setBit((byte) bit);
+        this.haMessage.setState(on);
+
+        view.setClickable(false);
+        view.setEnabled(true);
+        
+        sendHAMessage();
 	}
 
 	private void sendHAMessage() {
