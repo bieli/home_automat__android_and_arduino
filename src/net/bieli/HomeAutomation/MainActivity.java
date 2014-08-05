@@ -1,7 +1,6 @@
 package net.bieli.HomeAutomation;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -9,42 +8,55 @@ import android.widget.Toast;
 import android.view.View;
 import android.widget.ToggleButton;
 
-import net.bieli.HomeAutomation.R;
+import com.google.inject.Inject;
+
 import net.bieli.HomeAutomation.Services.HAMessageType;
 import net.bieli.HomeAutomation.Services.HaHttp.HAMessage;
-import net.bieli.HomeAutomation.Services.HaHttp.HAService;
+import net.bieli.HomeAutomation.Services.HaHttp.HAServiceImpl;
+
+import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectView;
 
 /**
  * MainActivity Android application class
  * 
  * @author Marcin Bielak <marcin.bieli@gmail.com>
  */
-public class MainActivity extends Activity {
+public class MainActivity extends RoboActivity {
 	private static final String LOG_TAG = "HA";
 	private static final String DEFAULT_URI = "http://192.168.1.5/ha.php";
-	private String ServicveUrl = "";
+	private String serviceUrl = "";
 
-	TextView result;
-	HAMessage haMessage;
-	HAService haService; 
+    @InjectView(R.id.http_address)
+    EditText editTextUri;
 
-	@Override
+    @InjectView(R.id.textView2)
+    TextView resultTextView;
+
+    @InjectView(R.id.editToken)
+    TextView tokenTextView;
+
+    @Inject
+    HAServiceImpl haServiceImpl;
+
+    @Inject
+    HAMessage haMessage;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-		Toast.makeText(
-			getApplicationContext(), 
-			"Welcome in HA app ...",
-			Toast.LENGTH_LONG
-		).show();
-		
-		setServicveUrl(DEFAULT_URI);
 
-		this.haService = new HAService();
+		setServiceUrl(DEFAULT_URI);
 
-		this.haService.setUri(ServicveUrl);
-		this.haService.setLoggerTag(LOG_TAG);	
+		haServiceImpl.setServiceUri(serviceUrl);
+		haServiceImpl.setLoggerTag(LOG_TAG);
+
+        Toast.makeText(
+                getApplicationContext(),
+                "Welcome in HA app ...",
+                Toast.LENGTH_LONG
+        ).show();
     }
 
 	@Override
@@ -71,21 +83,28 @@ public class MainActivity extends Activity {
     }
 
     public void onAddressUrlClicked(View view) {
-		EditText EditTextUri = (EditText) findViewById(R.id.http_address);
-		String uri = EditTextUri.getText().toString().trim();
+		String uri = editTextUri.getText().toString().trim();
 
-        this.setServicveUrl(uri);
+        this.setServiceUrl(uri);
 
     	Log.v(LOG_TAG, "change URI -> '" + uri + "'");
     }
 
-	private void setServicveUrl(String servicveUrl) {
-		final CharSequence text = servicveUrl.subSequence(0, servicveUrl.length());
-		
-		EditText EditTextUri = (EditText) findViewById(R.id.http_address);
-		EditTextUri.setText((CharSequence) text);
+    public void onEditTokenClicked(View view) {
+        String token = tokenTextView.getText().toString().trim();
 
-		this.ServicveUrl = servicveUrl;
+        haServiceImpl.setToken(token);
+
+        Log.v(LOG_TAG, "change HA TOKEN -> '" + token + "'");
+    }
+
+
+    private void setServiceUrl(String serviceUrl) {
+		final CharSequence text = serviceUrl.subSequence(0, serviceUrl.length());
+		
+		editTextUri.setText((CharSequence) text);
+
+		this.serviceUrl = serviceUrl;
 	}
 
 	private Boolean doHAServiceAction(View view, byte bit) {
@@ -100,8 +119,6 @@ public class MainActivity extends Activity {
 
         view.setClickable(false);
         view.setEnabled(false);
-
-		haMessage = new HAMessage();
 
 		haMessage.setMessageType(HAMessageType.SET_OUTPUT_DIGITAL);
 		haMessage.setValue((byte) bit);
@@ -119,9 +136,7 @@ public class MainActivity extends Activity {
 			return false;
 		}
 
-		result = (TextView)findViewById(R.id.textView2);
-
-		Boolean status = this.haService.send(haMessage);
+		Boolean status = haServiceImpl.send(haMessage);
 
 		if (status == true) {			
 			String onoff = "";
@@ -136,9 +151,9 @@ public class MainActivity extends Activity {
 			
 			Log.v(LOG_TAG, onoff);
 			
-			StringBuffer sb = this.haService.getOutputStringBuffer(); 
+			StringBuffer sb = haServiceImpl.getOutputStringBuffer();
 			
-			result.setText(sb.toString());
+			resultTextView.setText(sb.toString());
 			
 			Toast.makeText(
 				getApplicationContext(), 

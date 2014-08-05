@@ -6,23 +6,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
-
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/textView2"
-        android:max="100"
-        android:progress="25"
-        android:visibility="invisible" />
 
     <ToggleButton
         android:id="@+id/toggleButton1"
@@ -124,12 +114,9 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText4"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/seekBar1"
-        android:layout_below="@+id/networkStatus"
-        android:layout_marginLeft="22dp"
-        android:text="TextView" />
+        android:layout_alignLeft="@+id/seekBar1" />
 
     <SeekBar
         android:id="@+id/seekBar1"
@@ -140,7 +127,8 @@
         android:max="100"
         android:maxHeight="40dp"
         android:progress="25"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/editToken" />
 
     <TextView
         android:id="@+id/networkStatus"
@@ -151,5 +139,16 @@
         android:layout_below="@+id/seekBar1"
         android:text="TextView"
         android:visibility="invisible" />
+
+    <EditText
+        android:id="@+id/editToken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onAddressUrlClicked"
+        android:hint="HA service HTTP token"
+        android:inputType="textUri"
+        android:layout_below="@+id/http_address"
+        android:layout_alignLeft="@+id/seekBar1"
+        android:layout_alignRight="@+id/editText4" />
 
 </RelativeLayout>
