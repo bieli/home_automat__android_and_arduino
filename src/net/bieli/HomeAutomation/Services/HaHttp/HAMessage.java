@@ -10,7 +10,7 @@ import net.bieli.HomeAutomation.Services.HAMessageType;
  * @author Marcin Bielak <marcin.bieli@gmail.com>
  */
 public class HAMessage implements HAMessageType {
-	// optional mast for digital logic, controllers pins or things specific for hardware 
+	// optional mask for digital logic, controllers pins or things specific for hardware
 	private byte mask = 0;
 	// default int values else value is real if realValue = true
 	private int value = 0;

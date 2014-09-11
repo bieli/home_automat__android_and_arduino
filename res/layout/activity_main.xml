@@ -144,7 +144,7 @@
         android:id="@+id/editToken"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onAddressUrlClicked"
+        android:onClick="onEditTokenClicked"
         android:hint="HA service HTTP token"
         android:inputType="textUri"
         android:layout_below="@+id/http_address"

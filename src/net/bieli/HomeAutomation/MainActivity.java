@@ -47,10 +47,15 @@ public class MainActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-		setServiceUrl(DEFAULT_URI);
+        initializeComponents();
+    }
 
-		haServiceImpl.setServiceUri(serviceUrl);
-		haServiceImpl.setLoggerTag(LOG_TAG);
+    private void initializeComponents() {
+
+        setServiceUrl(DEFAULT_URI);
+
+        haServiceImpl.setServiceUri(serviceUrl);
+        haServiceImpl.setLoggerTag(LOG_TAG);
 
         Toast.makeText(
                 getApplicationContext(),
@@ -59,7 +64,7 @@ public class MainActivity extends RoboActivity {
         ).show();
     }
 
-	@Override
+    @Override
 	protected void onDestroy() {
 		Log.v(LOG_TAG, "onDestory");
 
@@ -97,7 +102,6 @@ public class MainActivity extends RoboActivity {
 
         Log.v(LOG_TAG, "change HA TOKEN -> '" + token + "'");
     }
-
 
     private void setServiceUrl(String serviceUrl) {
 		final CharSequence text = serviceUrl.subSequence(0, serviceUrl.length());
