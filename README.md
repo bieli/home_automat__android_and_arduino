@@ -4,6 +4,9 @@ HOME AUTOMAT - Android and Arduino
 This repository it is prototype of smartfone application for controlling our home devices.
 It is home automation Android panel for Arduino open hardware for controlling in this prototype version four relays (lamps at living room).
 
+Screenshot
+-----------
+![Application Home Automat screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/assets/home-automat.v0.4.png)
 
 Use case description
 --------------------
@@ -15,14 +18,8 @@ Use case description
  * Arduino waiting for HTTP POST dataset for parsing and controlling four relays.
  * Relays are connected with lamps in room and we can controlling those lamps from Android phone.
  * We are happy with new toy and before sleeping we can turn off the lights by clicks on smartfone app. ;-)
- 
- 
-Screenshot
------------
-![application screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/assets/home-automat.1.png)
 
 ![application screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/assets/home-automat.2.png)
-
 
 APK Android application for install (tested only on system Android 2.1 and 4.0)
 -----------
