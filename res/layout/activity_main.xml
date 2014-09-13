@@ -10,19 +10,13 @@
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/textView2"
-        android:max="100"
-        android:progress="25"
-        android:visibility="invisible" />
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="false"
+        android:layout_centerVertical="false"
+        android:text="@string/app_title" />
 
     <ToggleButton
         android:id="@+id/toggleButton1"
@@ -33,7 +27,7 @@
         android:layout_below="@+id/textView1"
         android:layout_marginTop="30dp"
         android:onClick="onToggle1Clicked"
-        android:text="ToggleButton"
+        android:text=""
         android:textOff="OFF"
         android:textOn="ON" />
 
@@ -44,7 +38,7 @@
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/toggleButton1"
         android:onClick="onToggle2Clicked"
-        android:text="ToggleButton"
+        android:text=""
         android:textOff="OFF"
         android:textOn="ON" />
 
@@ -55,7 +49,7 @@
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/toggleButton2"
         android:onClick="onToggle3Clicked"
-        android:text="ToggleButton"
+        android:text=""
         android:textOff="OFF"
         android:textOn="ON"
         android:textStyle="normal" />
@@ -67,7 +61,7 @@
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/toggleButton3"
         android:onClick="onToggle4Clicked"
-        android:text="ToggleButton"
+        android:text=""
         android:textOff="OFF"
         android:textOn="ON" />
 
@@ -79,7 +73,8 @@
         android:layout_alignRight="@+id/seekBar1"
         android:layout_alignTop="@+id/toggleButton1"
         android:layout_toRightOf="@+id/toggleButton1"
-        android:text="Relay 1" />
+        android:text="@string/relay_1"
+        android:inputType="textShortMessage"/>
 
     <EditText
         android:id="@+id/editText2"
@@ -89,7 +84,8 @@
         android:layout_alignRight="@+id/editText1"
         android:layout_alignTop="@+id/toggleButton2"
         android:layout_toRightOf="@+id/toggleButton2"
-        android:text="Relay 2" />
+        android:text="@string/relay_2"
+        android:inputType="textShortMessage"/>
 
     <EditText
         android:id="@+id/editText3"
@@ -98,7 +94,8 @@
         android:layout_alignRight="@+id/editText2"
         android:layout_alignTop="@+id/toggleButton3"
         android:layout_toRightOf="@+id/toggleButton3"
-        android:text="Night Lamp 1" />
+        android:text="@string/night_lamp_1"
+        android:inputType="textShortMessage"/>
 
     <EditText
         android:id="@+id/editText4"
@@ -107,7 +104,8 @@
         android:layout_alignLeft="@+id/editText3"
         android:layout_alignRight="@+id/editText3"
         android:layout_below="@+id/toggleButton3"
-        android:text="Night Lamp 2" />
+        android:text="@string/night_lamp_2"
+        android:inputType="textShortMessage"/>
 
     <EditText
         android:id="@+id/http_address"
@@ -117,19 +115,30 @@
         android:layout_alignRight="@+id/editText4"
         android:layout_below="@+id/editText4"
         android:onClick="onAddressUrlClicked"
-        android:hint="HA service HTTP address"
-        android:inputType="textUri" />
+        android:hint="@string/ha_service_http_address"
+        android:inputType="textUri"/>
+
+    <EditText
+        android:id="@+id/edit_token"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onEditTokenClicked"
+        android:hint="@string/ha_service_http_token"
+        android:inputType="textUri"
+        android:layout_below="@+id/http_address"
+        android:layout_alignLeft="@+id/seekBar1"
+        android:layout_alignRight="@+id/editText4" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText4"
+        android:layout_alignLeft="@+id/edit_token"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/seekBar1"
-        android:layout_below="@+id/networkStatus"
-        android:layout_marginLeft="22dp"
-        android:text="TextView" />
+        android:layout_below="@+id/edit_token"
+        android:text="" />
+
 
     <SeekBar
         android:id="@+id/seekBar1"
@@ -142,14 +151,5 @@
         android:progress="25"
         android:visibility="invisible" />
 
-    <TextView
-        android:id="@+id/networkStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignRight="@+id/seekBar1"
-        android:layout_below="@+id/seekBar1"
-        android:text="TextView"
-        android:visibility="invisible" />
 
 </RelativeLayout>

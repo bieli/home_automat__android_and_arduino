@@ -1,5 +1,10 @@
 package net.bieli.HomeAutomation;
 
+import java.net.URISyntaxException;
+
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -12,7 +17,8 @@ import android.widget.ToggleButton;
 import net.bieli.HomeAutomation.R;
 import net.bieli.HomeAutomation.Services.HAMessageType;
 import net.bieli.HomeAutomation.Services.HaHttp.HAMessage;
-import net.bieli.HomeAutomation.Services.HaHttp.HAService;
+import net.bieli.HomeAutomation.Services.HaHttp.HAServiceImpl;
+
 
 /**
  * MainActivity Android application class
@@ -22,89 +28,141 @@ import net.bieli.HomeAutomation.Services.HaHttp.HAService;
 public class MainActivity extends Activity {
 	private static final String LOG_TAG = "HA";
 	private static final String DEFAULT_URI = "http://192.168.1.5/ha.php";
-	private String ServicveUrl = "";
+	private static final String DEFAULT_TOKEN = "_token_";
 
-	TextView result;
+	Log logger;
 	HAMessage haMessage;
-	HAService haService; 
+	HAServiceImpl haServiceImpl;
+
+	TextView resultTextView;
+	EditText editTextUri;
+	String serviceUrl;
+	TextView tokenTextView;
+	private String token;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
+		Log.v(LOG_TAG, "MainActivity: onCreate");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-		Toast.makeText(
-			getApplicationContext(), 
-			"Welcome in HA app ...",
-			Toast.LENGTH_LONG
-		).show();
-		
-		setServicveUrl(DEFAULT_URI);
 
-		this.haService = new HAService();
-
-		this.haService.setUri(ServicveUrl);
-		this.haService.setLoggerTag(LOG_TAG);	
+        try {
+			initializeComponents();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
-	@Override
+    private void initializeComponents() throws URISyntaxException {
+    	haMessage = new HAMessage();
+
+    	haServiceImpl = new HAServiceImpl(new DefaultHttpClient(), new HttpPost(), logger);
+        haServiceImpl.setLoggerTag(LOG_TAG);
+        
+        setToken(DEFAULT_TOKEN);
+    	setServiceUrl(DEFAULT_URI);
+
+        Toast.makeText(
+                getApplicationContext(),
+                "Welcome in HA app ...",
+                Toast.LENGTH_LONG
+        ).show();
+    }
+
+    @Override
 	protected void onDestroy() {
-		Log.v(LOG_TAG, "onDestory");
+		Log.v(LOG_TAG, "MainActivity: onDestory");
 
 		super.onDestroy();
 	}
 
     public void onToggle1Clicked(View view) {
-        doHAServiceAction(view, (byte) 0);
+        doHAServiceAction(view, HAMessageType.DIGITAL_DEVICE_0);
     }
 
     public void onToggle2Clicked(View view) {
-        doHAServiceAction(view, (byte) 1);
+        doHAServiceAction(view, HAMessageType.DIGITAL_DEVICE_1);
     }
 
     public void onToggle3Clicked(View view) {
-        doHAServiceAction(view, (byte) 2);
+        doHAServiceAction(view, HAMessageType.DIGITAL_DEVICE_2);
     }
     
     public void onToggle4Clicked(View view) {
-        doHAServiceAction(view, (byte) 3);
+        doHAServiceAction(view, HAMessageType.DIGITAL_DEVICE_3);
     }
 
-    public void onAddressUrlClicked(View view) {
-		EditText EditTextUri = (EditText) findViewById(R.id.http_address);
-		String uri = EditTextUri.getText().toString().trim();
+    public void onAddressUrlClicked(View view) throws URISyntaxException {
+        editTextUri = (EditText) findViewById(R.id.http_address);
+		String uri = editTextUri.getText().toString().trim();
 
-        this.setServicveUrl(uri);
+        this.setServiceUrl(uri);
 
     	Log.v(LOG_TAG, "change URI -> '" + uri + "'");
     }
 
-	private void setServicveUrl(String servicveUrl) {
-		final CharSequence text = servicveUrl.subSequence(0, servicveUrl.length());
-		
-		EditText EditTextUri = (EditText) findViewById(R.id.http_address);
-		EditTextUri.setText((CharSequence) text);
+    public void onEditTokenClicked(View view) {
+    	tokenTextView = (EditText) findViewById(R.id.edit_token);
+        String token = tokenTextView.getText().toString().trim();
 
-		this.ServicveUrl = servicveUrl;
+        setToken(token);
+
+        Log.v(LOG_TAG, "change HA TOKEN -> '" + token + "'");
+    }
+
+    private void setServiceUrl(String serviceUrl) throws URISyntaxException {
+    	CharSequence serviceUrlText = serviceUrl;
+
+		if (serviceUrlText != null) {
+	    	editTextUri = (EditText) findViewById(R.id.http_address);    	
+			editTextUri.setText(serviceUrlText);
+
+			Log.v(LOG_TAG, "setServiceUrl http_address: '" + serviceUrlText + "'");
+
+			this.serviceUrl = serviceUrl;
+
+	        haServiceImpl.setServiceUri(serviceUrl);
+		}
 	}
 
-	private Boolean doHAServiceAction(View view, byte bit) {
+    private void setToken(String token) {
+    	CharSequence tokenText = token;
+
+		if (tokenText != null) {
+	    	tokenTextView = (EditText) findViewById(R.id.edit_token);    	
+	    	tokenTextView.setText(tokenText);
+
+			Log.v(LOG_TAG, "setToken edit_token: '" + tokenText + "'");
+
+			this.token = token;
+
+	        haServiceImpl.setToken(token);
+		}
+	}
+
+    private Boolean doHAServiceAction(View view, byte mask) {
         boolean on = ((ToggleButton) view).isChecked();
-        byte mask = 0;
-        
+        byte value = 0;
+
+        Log.v(LOG_TAG, "doHAServiceAction on: '" + String.format("%s", on) + "'");
+
         if (on) {
-        	mask = 1;
+        	value = HAMessageType.DIGITAL_STATE_HIGH;
         } else {
-        	mask = 0;
+        	value = HAMessageType.DIGITAL_STATE_LOW;
         }
+
+        Log.v(LOG_TAG, "doHAServiceAction mask: '" + String.format("%s", mask) + "'");
 
         view.setClickable(false);
         view.setEnabled(false);
 
-		haMessage = new HAMessage();
+        Log.v(LOG_TAG, "doHAServiceAction set message");
 
 		haMessage.setMessageType(HAMessageType.SET_OUTPUT_DIGITAL);
-		haMessage.setValue((byte) bit);
+		haMessage.setValue(value);
 		haMessage.setMask(mask);
 		haMessage.setRealValue(false);
 
@@ -115,30 +173,40 @@ public class MainActivity extends Activity {
 	}
 
 	private Boolean sendHAMessageForOutputDigital(HAMessage haMessage) {
+        Log.v(LOG_TAG, "sendHAMessageForOutputDigital START");
+
+        // TODO: add other than SET_OUTPUT_DIGITAL types in app.
 		if (haMessage.getMessageType() != HAMessageType.SET_OUTPUT_DIGITAL) {
+	        Log.v(LOG_TAG, "sendHAMessageForOutputDigital START");
+
 			return false;
 		}
 
-		result = (TextView)findViewById(R.id.textView2);
+		Boolean status = haServiceImpl.send(haMessage);
 
-		Boolean status = this.haService.send(haMessage);
+		Log.v(LOG_TAG, "sendHAMessageForOutputDigital send status: '" + String.format("%s", status) + "'");
 
 		if (status == true) {			
 			String onoff = "";
 			
-			if (haMessage.getMask() == 1) {
-				onoff = "ON";
-			} else {
-				onoff = "OFF";
+			switch (haMessage.getMask()) {
+				case HAMessageType.DIGITAL_STATE_HIGH:
+					onoff = "ON";
+					break;
+				case HAMessageType.DIGITAL_STATE_LOW:
+					onoff = "OFF";
+					break;
 			}
 			
-			onoff = "switch '" + haMessage.getValue() + "' -> '" + onoff + "'";
+			onoff = "sendHAMessageForOutputDigital switch '" + haMessage.getValue() + "' -> '" + onoff + "'";
 			
 			Log.v(LOG_TAG, onoff);
 			
-			StringBuffer sb = this.haService.getOutputStringBuffer(); 
+			StringBuffer sb = haServiceImpl.getOutputStringBuffer();
 			
-			result.setText(sb.toString());
+			Log.v(LOG_TAG, "sendHAMessageForOutputDigital getOutputStringBuffer: \n" + sb);
+			resultTextView = (TextView)findViewById(R.id.textView2);
+			resultTextView.setText(sb.toString());
 			
 			Toast.makeText(
 				getApplicationContext(), 
@@ -151,9 +219,12 @@ public class MainActivity extends Activity {
 				"Error -> when calling HAMessage()", 
 				Toast.LENGTH_LONG
 			).show();
+			
+			Log.e(LOG_TAG, "sendHAMessageForOutputDigital: Error -> when calling HAMessage()");
 		}
 		
+        Log.v(LOG_TAG, "sendHAMessageForOutputDigital END");
+
 		return status;
 	}
 }
-
