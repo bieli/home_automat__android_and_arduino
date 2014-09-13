@@ -26,6 +26,27 @@ APK Android application for install (tested only on system Android 2.1 and 4.0)
 ![HOME AUTOMAT APK Icon](https://raw.github.com/bieli/home_automat__android_and_arduino/master/res/drawable-xhdpi/ic_launcher.png)
 [![Install by click - HomeAutomation.apk](https://github.com/bieli/home_automat__android_and_arduino/raw/master/bin/HA.apk)]
 
+
+HOW TO DEBUG WITH PHP WEB SERVER EMULATOR SCRIPT
+------------------------------------------------
+> php -S 192.168.1.5 ha.php 
+> 
+> array (
+>   'type' => '1',
+>   'mask' => '2',
+>   'value' => '1',
+> )
+> 'HA-TOKEN: _token_'
+> array (
+>   'type' => '1',
+>   'mask' => '2',
+>   'value' => '0',
+> )
+> 'HA-TOKEN: _token_'
+
+
+
+
 TODO
 ----
  * add some unit tests
