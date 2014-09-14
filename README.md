@@ -8,16 +8,15 @@ Screenshot
 -----------
 ![Application Home Automat screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/assets/home-automat.v0.5.png)
 
-Use case description
+Technical description
 --------------------
 
- * Send HTTP POST with data for Arduino open hardware.
- * App. sending request type (1 = SET_OUTPUT_DIGITAL) and mask (0 | 1 | 2 | 4) and state value (1 = ON | 0 = OFF) in POST parameters.
- * App. sending special token inputed in app. GUI (from textEdit) - in feature will be unique/generated individual for Your smartfone
- * Arduino has network interface with hardcoded tcp/ip location.
- * Arduino waiting for HTTP POST dataset for parsing and controlling four relays.
- * Relays are connected with lamps in room and we can controlling those lamps from Android phone.
- * We are happy with new toy and before sleeping we can turn off the lights by clicks on smartfone app. ;-)
+ * App. send HTTP POST with data for Arduino open hardware with request parameters: type (1 = SET_OUTPUT_DIGITAL), mask (0 | 1 | 2 | 4), value (1 = ON | 0 = OFF)
+ * Additinally header HA-TOKEN is sending - inputed by app. layout named HA token - it's unique/generated individual hash for Your smartfone
+ * On Arduino side it's network interface with configured tcp/ip location named in app. layout Arduino URL
+ * Arduino waiting for HTTP POST request and parsing date for controlling four relays connected as outputs
+ * Relays are connected with lamps in room and we can controlling those lamps from Android phone
+ * We are happy with new toy and before sleeping we can turn off the lights by clicks on smartfone app. buttons ;-)
 
 ![application screenshot](https://raw.github.com/bieli/home_automat__android_and_arduino/master/assets/home-automat.2.png)
 
@@ -30,21 +29,13 @@ APK Android application for install (tested only on system Android 2.1 and 4.0)
 HOW TO DEBUG WITH PHP WEB SERVER EMULATOR SCRIPT
 ------------------------------------------------
 > php -S 192.168.1.5 ha.php 
-> 
+> tail -f /tmp/HomeAutoma.response.log
 > array (
 >   'type' => '1',
 >   'mask' => '2',
 >   'value' => '1',
 > )
 > 'HA-TOKEN: _token_'
-> array (
->   'type' => '1',
->   'mask' => '2',
->   'value' => '0',
-> )
-> 'HA-TOKEN: _token_'
-
-
 
 
 TODO
