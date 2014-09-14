@@ -203,7 +203,7 @@ public class MainActivity extends Activity {
 		if (status == true) {			
 			String onoff = "";
 			
-			switch (haMessage.getMask()) {
+			switch (haMessage.getValue()) {
 				case HAMessageType.DIGITAL_STATE_HIGH:
 					onoff = "ON";
 					break;
