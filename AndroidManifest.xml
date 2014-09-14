@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.bieli.HomeAutomation"
     android:versionCode="4"
-    android:versionName="0.4" >
+    android:versionName="0.4">
 
 <!--     <input-method xmlns:android="http://schemas.android.com/apk/res/android" 
     	android:settingsActivity="net.bieli.MainSettings"/>
@@ -10,6 +10,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<!--
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+-->
+	  
 
 	<uses-sdk
         android:minSdkVersion="7"

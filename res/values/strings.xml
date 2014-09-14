@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-
+<resources>  
     <string name="app_name">HOME AUTOMAT</string>
     <string name="action_settings">Settings</string>
-    <string name="app_title">HOME AUTOMAT - v0.4</string>
+    <string name="app_title">Your home is your servant</string>
+    <string name="app_version">v0.5</string>
     <string name="ha_service_http_token">HA service HTTP token</string>
     <string name="ha_service_http_address">HA service HTTP address</string>
     <string name="relay_1">Relay 1</string>
     <string name="relay_2">Relay 2</string>
     <string name="night_lamp_1">Night Lamp 1</string>
     <string name="night_lamp_2">Night Lamp 2</string>
+    <string name="arduino_url">Arduino URL</string>
+    <string name="ha_token">HA token</string>
+    <string name="controls">Controls:</string>
+    <string name="preferences">Preferences:</string>
+    <string name="linkToGitHub"><a href="https://github.com/bieli/home_automat__android_and_arduino">More about HomeAutomat (click here)</a></string>
 
 </resources>

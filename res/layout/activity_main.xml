@@ -16,6 +16,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="false"
         android:layout_centerVertical="false"
+        android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/app_title" />
 
     <ToggleButton
@@ -59,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView1"
+        android:layout_alignParentLeft="false"
         android:layout_below="@+id/toggleButton3"
         android:onClick="onToggle4Clicked"
         android:text=""
@@ -73,8 +75,8 @@
         android:layout_alignRight="@+id/seekBar1"
         android:layout_alignTop="@+id/toggleButton1"
         android:layout_toRightOf="@+id/toggleButton1"
-        android:text="@string/relay_1"
-        android:inputType="textShortMessage"/>
+        android:inputType="textShortMessage"
+        android:text="@string/relay_1" />
 
     <EditText
         android:id="@+id/editText2"
@@ -84,72 +86,125 @@
         android:layout_alignRight="@+id/editText1"
         android:layout_alignTop="@+id/toggleButton2"
         android:layout_toRightOf="@+id/toggleButton2"
-        android:text="@string/relay_2"
-        android:inputType="textShortMessage"/>
+        android:inputType="textShortMessage"
+        android:text="@string/relay_2" />
 
     <EditText
         android:id="@+id/editText3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/toggleButton3"
         android:layout_alignRight="@+id/editText2"
         android:layout_alignTop="@+id/toggleButton3"
         android:layout_toRightOf="@+id/toggleButton3"
-        android:text="@string/night_lamp_1"
-        android:inputType="textShortMessage"/>
+        android:inputType="textShortMessage"
+        android:text="@string/night_lamp_1" />
 
     <EditText
         android:id="@+id/editText4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/toggleButton4"
         android:layout_alignLeft="@+id/editText3"
         android:layout_alignRight="@+id/editText3"
         android:layout_below="@+id/toggleButton3"
-        android:text="@string/night_lamp_2"
-        android:inputType="textShortMessage"/>
-
-    <EditText
-        android:id="@+id/http_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/seekBar1"
-        android:layout_alignRight="@+id/editText4"
-        android:layout_below="@+id/editText4"
-        android:onClick="onAddressUrlClicked"
-        android:hint="@string/ha_service_http_address"
-        android:inputType="textUri"/>
+        android:inputType="textShortMessage"
+        android:text="@string/night_lamp_2" />
 
     <EditText
         android:id="@+id/edit_token"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onEditTokenClicked"
+        android:layout_alignLeft="@+id/http_address"
+        android:layout_alignRight="@+id/http_address"
+        android:layout_below="@+id/http_address"
         android:hint="@string/ha_service_http_token"
         android:inputType="textUri"
-        android:layout_below="@+id/http_address"
-        android:layout_alignLeft="@+id/seekBar1"
-        android:layout_alignRight="@+id/editText4" />
+        android:onClick="onEditTokenClicked" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/edit_token"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/seekBar1"
-        android:layout_below="@+id/edit_token"
-        android:text="" />
+        android:layout_alignLeft="@+id/toggleButton4"
+        android:layout_below="@+id/seekBar1" />
 
+    <EditText
+        android:id="@+id/http_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/seekBar1"
+        android:layout_below="@+id/editText4"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="@string/ha_service_http_address"
+        android:inputType="textUri"
+        android:onClick="onAddressUrlClicked" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="5dp"
+        android:textColor="#afafaf"
+        android:text="@string/controls" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/http_address"
+        android:layout_alignBottom="@+id/http_address"
+        android:layout_alignLeft="@+id/seekBar1"
+        android:text="@string/arduino_url" />
 
     <SeekBar
         android:id="@+id/seekBar1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/toggleButton4"
-        android:layout_below="@+id/http_address"
+        android:layout_below="@+id/toggleButton4"
         android:max="100"
         android:maxHeight="40dp"
         android:progress="25"
         android:visibility="invisible" />
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/edit_token"
+        android:layout_alignBottom="@+id/edit_token"
+        android:layout_alignLeft="@+id/textView2"
+        android:text="@string/ha_token" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView2"
+        android:layout_alignLeft="@+id/textView2"
+        android:textColor="#afafaf"
+        android:text="@string/preferences" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/TextView01"
+        android:layout_alignRight="@+id/textView1"
+        android:textColor="#afafaf"
+        android:text="@string/app_version"  />
+
+     <TextView
+        android:id="@+id/link_to_github"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_token"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="1dp"
+        android:text="@string/linkToGitHub" />
 
 </RelativeLayout>

@@ -24,16 +24,22 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000d;
+        public static final int TextView01=0x7f08000d;
+        public static final int action_settings=0x7f080013;
         public static final int editText1=0x7f080005;
         public static final int editText2=0x7f080007;
         public static final int editText3=0x7f080008;
         public static final int editText4=0x7f080009;
-        public static final int edit_token=0x7f08000b;
-        public static final int http_address=0x7f08000a;
+        public static final int edit_token=0x7f08000a;
+        public static final int http_address=0x7f08000b;
+        public static final int link_to_github=0x7f080012;
         public static final int seekBar1=0x7f080006;
         public static final int textView1=0x7f080000;
         public static final int textView2=0x7f08000c;
+        public static final int textView3=0x7f08000e;
+        public static final int textView4=0x7f08000f;
+        public static final int textView5=0x7f080010;
+        public static final int textView6=0x7f080011;
         public static final int toggleButton1=0x7f080001;
         public static final int toggleButton2=0x7f080002;
         public static final int toggleButton3=0x7f080003;
@@ -49,12 +55,18 @@ public final class R {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
         public static final int app_title=0x7f050002;
-        public static final int ha_service_http_address=0x7f050004;
-        public static final int ha_service_http_token=0x7f050003;
-        public static final int night_lamp_1=0x7f050007;
-        public static final int night_lamp_2=0x7f050008;
-        public static final int relay_1=0x7f050005;
-        public static final int relay_2=0x7f050006;
+        public static final int app_version=0x7f050003;
+        public static final int arduino_url=0x7f05000a;
+        public static final int controls=0x7f05000c;
+        public static final int ha_service_http_address=0x7f050005;
+        public static final int ha_service_http_token=0x7f050004;
+        public static final int ha_token=0x7f05000b;
+        public static final int linkToGitHub=0x7f05000e;
+        public static final int night_lamp_1=0x7f050008;
+        public static final int night_lamp_2=0x7f050009;
+        public static final int preferences=0x7f05000d;
+        public static final int relay_1=0x7f050006;
+        public static final int relay_2=0x7f050007;
     }
     public static final class style {
         /** 

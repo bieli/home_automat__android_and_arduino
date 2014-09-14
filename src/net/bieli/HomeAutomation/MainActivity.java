@@ -7,6 +7,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import net.bieli.HomeAutomation.R;
 import net.bieli.HomeAutomation.Services.HAMessageType;
 import net.bieli.HomeAutomation.Services.HaHttp.HAMessage;
 import net.bieli.HomeAutomation.Services.HaHttp.HAServiceImpl;
+import net.bieli.HomeAutomation.Utils.DeviceIdFactory;
 
 
 /**
@@ -28,7 +31,6 @@ import net.bieli.HomeAutomation.Services.HaHttp.HAServiceImpl;
 public class MainActivity extends Activity {
 	private static final String LOG_TAG = "HA";
 	private static final String DEFAULT_URI = "http://192.168.1.5/ha.php";
-	private static final String DEFAULT_TOKEN = "_token_";
 
 	Log logger;
 	HAMessage haMessage;
@@ -43,6 +45,15 @@ public class MainActivity extends Activity {
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
 		Log.v(LOG_TAG, "MainActivity: onCreate");
+
+		// special code for clickable TextView element
+		TextView linkToGithub = (TextView) findViewById(R.id.link_to_github);
+		if (linkToGithub != null) {
+			linkToGithub.setClickable(true);
+			linkToGithub.setMovementMethod(LinkMovementMethod.getInstance());
+		}
+//TODO: we need link, but in Android 2.1 it is terible story !
+//		Linkify.addLinks((TextView) findViewById(R.id.link_to_github), Linkify.ALL);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -60,8 +71,11 @@ public class MainActivity extends Activity {
 
     	haServiceImpl = new HAServiceImpl(new DefaultHttpClient(), new HttpPost(), logger);
         haServiceImpl.setLoggerTag(LOG_TAG);
-        
-        setToken(DEFAULT_TOKEN);
+
+    	token = DeviceIdFactory.getShortToken(getBaseContext());
+    	Log.v(LOG_TAG, "DeviceUuidFactory.getShortToken: '" + token + "'");
+
+        setToken(token);
     	setServiceUrl(DEFAULT_URI);
 
         Toast.makeText(
