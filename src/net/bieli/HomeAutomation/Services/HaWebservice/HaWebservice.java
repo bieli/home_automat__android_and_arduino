@@ -1,17 +1,17 @@
 package net.bieli.HomeAutomation.Services.HaWebservice;
 
-import java.util.List;
+import java.util.Set;
+
+import net.bieli.HomeAutomation.Services.HaWebservice.model.UserData;
+import net.bieli.HomeAutomation.Services.HaWebservice.model.UserDataCollection;
 
 import com.turbomanage.httpclient.BasicHttpClient;
 
 public interface HaWebservice {
-	public void setUserId(Integer userId);
-	public void setToken(String token);
 	public void setUri(String uri);
-	public void setUsersData(List<UserData> usersDataList);
-	public void setHttpClient(BasicHttpClient httpClient);
+	public void setUsersDataSet(Set<UserData> userDataSet);
 	public boolean post();
-	public boolean put();
-	public List<UserData> get();
+	public boolean put(String key, String value);
+	public Set<UserData> getAll();
+	public boolean delete(String key);
 }
-
