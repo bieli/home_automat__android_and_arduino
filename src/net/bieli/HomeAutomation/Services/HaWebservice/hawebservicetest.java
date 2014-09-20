@@ -1,11 +1,9 @@
 package net.bieli.HomeAutomation.Services.HaWebservice;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import net.bieli.HomeAutomation.Services.HaWebservice.model.UserData;
-import net.bieli.HomeAutomation.Services.Utils.CSV;
 
 import com.turbomanage.httpclient.BasicHttpClient;
 

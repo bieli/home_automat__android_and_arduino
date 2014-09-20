@@ -1,9 +1,13 @@
 package net.bieli.HomeAutomation;
 
 import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import com.turbomanage.httpclient.BasicHttpClient;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -20,6 +24,9 @@ import net.bieli.HomeAutomation.R;
 import net.bieli.HomeAutomation.Services.HAMessageType;
 import net.bieli.HomeAutomation.Services.HaHttp.HAMessage;
 import net.bieli.HomeAutomation.Services.HaHttp.HAServiceImpl;
+import net.bieli.HomeAutomation.Services.HaWebservice.HaWebservice;
+import net.bieli.HomeAutomation.Services.HaWebservice.HaWebserviceImpl;
+import net.bieli.HomeAutomation.Services.HaWebservice.model.UserData;
 import net.bieli.HomeAutomation.Utils.DeviceIdFactory;
 
 
@@ -60,6 +67,7 @@ public class MainActivity extends Activity {
 
         try {
 			initializeComponents();
+			initHaWebservice();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,6 +91,30 @@ public class MainActivity extends Activity {
                 "Welcome in HA app ...",
                 Toast.LENGTH_LONG
         ).show();
+    }
+    
+    private void initHaWebservice() {
+		HaWebservice haWebservice = new HaWebserviceImpl(
+			new BasicHttpClient(),
+			123,
+			"Test123",
+			new net.bieli.HomeAutomation.Utils.CSV()
+		);
+	
+		String uri = "http://127.0.0.1:1234";
+//		String uri = "http://192.96.201.102:30229"
+		haWebservice.setUri(uri);
+
+//		UserData userData = new UserData("Relay 2", "1");
+
+//		Set<UserData> userDataSet = new HashSet<UserData>();
+//		userDataSet.add(userData);
+//
+//		haWebservice.setUsersDataSet(userDataSet);
+
+//		Set<UserData> data = haWebservice.getAll();
+
+		haWebservice.put("Relay 2", "1");
     }
 
     @Override
