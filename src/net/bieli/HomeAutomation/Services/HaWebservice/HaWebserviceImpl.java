@@ -1,10 +1,17 @@
 package net.bieli.HomeAutomation.Services.HaWebservice;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.net.ssl.SSLEngineResult.Status;
 
 import net.bieli.HomeAutomation.Services.HaWebservice.model.UserData;
+import net.bieli.HomeAutomation.Utils.CSV;
 
 import com.turbomanage.httpclient.BasicHttpClient;
 import com.turbomanage.httpclient.HttpResponse;
@@ -25,9 +32,15 @@ public class HaWebserviceImpl implements HaWebservice {
 	private Set<UserData> userDataSet;
 	private BasicHttpClient httpClient;
 	private ParameterMap params;
+	private CSV csv;
 
 	
-	public HaWebserviceImpl(BasicHttpClient httpClient, Integer userId, String token) {
+	public HaWebserviceImpl(
+		BasicHttpClient httpClient,
+		Integer userId,
+		String token,
+		CSV csv
+	) {
 		this.httpClient = httpClient;
 
 		this.userId = userId;
@@ -38,7 +51,10 @@ public class HaWebserviceImpl implements HaWebservice {
         httpClient.setReadTimeout(DEFAULT_READ_TIMEOUT);
 
         params = httpClient.newParams();
+
         	//.add("param1", "paramValue");
+        
+        this.csv = csv;
 	}
 
 	@Override
@@ -86,7 +102,35 @@ public class HaWebserviceImpl implements HaWebservice {
     	System.out.println("getAll() body START... \n" + body);
     	System.out.println("getAll() body END. \n");
 
-		return null;
+    	Set<UserData> outputData = new HashSet<UserData>();
+    	String[] csvLine = body.split("\n");
+    	for (String line : csvLine) {
+    		ArrayList<String> values = (ArrayList<String>) csv.parse(line);
+
+
+    		UserData dataObj;
+    	    try {
+        		String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
+        	    Date datef = new Date();
+        	    SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+        	    String stringDate = sdf.format(datef);
+    	        Date dateFormated = sdf.parse(values.get(0));
+
+        		dataObj = new UserData(
+        				dateFormated,
+        				values.get(1),
+        				values.get(2)
+        			);
+    	    } catch(ParseException e) {
+				dataObj = new UserData(
+					values.get(1),
+					values.get(2)
+				);
+    	    }
+			outputData.add(dataObj);
+    	}
+
+		return outputData;
 	}
 
 	private String prepareToken(Integer userId, String token) {
