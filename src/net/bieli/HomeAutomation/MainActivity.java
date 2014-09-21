@@ -1,33 +1,29 @@
 package net.bieli.HomeAutomation;
 
 import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-
-import com.turbomanage.httpclient.BasicHttpClient;
-
-import android.os.Bundle;
-import android.app.Activity;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
-import android.util.Log;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.view.View;
-import android.widget.ToggleButton;
-
-import net.bieli.HomeAutomation.R;
 import net.bieli.HomeAutomation.Services.HAMessageType;
 import net.bieli.HomeAutomation.Services.HaHttp.HAMessage;
 import net.bieli.HomeAutomation.Services.HaHttp.HAServiceImpl;
 import net.bieli.HomeAutomation.Services.HaWebservice.HaWebservice;
 import net.bieli.HomeAutomation.Services.HaWebservice.HaWebserviceImpl;
-import net.bieli.HomeAutomation.Services.HaWebservice.model.UserData;
 import net.bieli.HomeAutomation.Utils.DeviceIdFactory;
+
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import com.turbomanage.httpclient.BasicHttpClient;
+import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 
 /**
@@ -95,7 +91,7 @@ public class MainActivity extends Activity {
     
     private void initHaWebservice() {
 		HaWebservice haWebservice = new HaWebserviceImpl(
-			new BasicHttpClient(),
+			new AndroidHttpClient(),
 			123,
 			"Test123",
 			new net.bieli.HomeAutomation.Utils.CSV()
@@ -114,7 +110,7 @@ public class MainActivity extends Activity {
 
 //		Set<UserData> data = haWebservice.getAll();
 
-		haWebservice.put("Relay 2", "1");
+//		haWebservice.put("Relay 2", "1");
     }
 
     @Override

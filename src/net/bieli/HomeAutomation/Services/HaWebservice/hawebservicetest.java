@@ -6,6 +6,7 @@ import java.util.Set;
 import net.bieli.HomeAutomation.Services.HaWebservice.model.UserData;
 
 import com.turbomanage.httpclient.BasicHttpClient;
+import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 public final class hawebservicetest {
 	HaWebservice haWebservice;
@@ -18,7 +19,7 @@ public final class hawebservicetest {
 		Integer userId = 123;
 
 		HaWebservice haWebservice = new HaWebserviceImpl(
-			new BasicHttpClient(),
+			new AndroidHttpClient(),
 			userId,
 			token,
 			new net.bieli.HomeAutomation.Utils.CSV()

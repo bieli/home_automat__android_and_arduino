@@ -16,6 +16,7 @@ import net.bieli.HomeAutomation.Utils.CSV;
 import com.turbomanage.httpclient.BasicHttpClient;
 import com.turbomanage.httpclient.HttpResponse;
 import com.turbomanage.httpclient.ParameterMap;
+import com.turbomanage.httpclient.android.AndroidHttpClient;
 
 public class HaWebserviceImpl implements HaWebservice {
 	public static final String DEFAULT_PATH_PATTERN = "/v1/feed/%d.csv";
@@ -30,27 +31,27 @@ public class HaWebserviceImpl implements HaWebservice {
 	private String uri;
 	private String path;
 	private Set<UserData> userDataSet;
-	private BasicHttpClient httpClient;
+	private AndroidHttpClient httpClient;
 	private ParameterMap params;
 	private CSV csv;
 
 	
 	public HaWebserviceImpl(
-		BasicHttpClient httpClient,
+		AndroidHttpClient androidHttpClient,
 		Integer userId,
 		String token,
 		CSV csv
 	) {
-		this.httpClient = httpClient;
+		this.httpClient = androidHttpClient;
 
 		this.userId = userId;
 		this.path = String.format(DEFAULT_PATH_PATTERN, userId);
 
-		httpClient.addHeader(HA_TOKEN_NAME, prepareToken(userId, token));
-        httpClient.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
-        httpClient.setReadTimeout(DEFAULT_READ_TIMEOUT);
+		androidHttpClient.addHeader(HA_TOKEN_NAME, prepareToken(userId, token));
+        androidHttpClient.setConnectionTimeout(DEFAULT_CONNECTION_TIMEOUT);
+        androidHttpClient.setReadTimeout(DEFAULT_READ_TIMEOUT);
 
-        params = httpClient.newParams();
+        params = androidHttpClient.newParams();
 
         	//.add("param1", "paramValue");
         
