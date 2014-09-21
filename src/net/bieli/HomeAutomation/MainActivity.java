@@ -41,7 +41,7 @@ import com.turbomanage.httpclient.android.AndroidHttpClient;
  */
 public class MainActivity extends Activity {
 	private static final String LOG_TAG = "HA";
-	private static final String DEFAULT_URI = "http://192.168.1.5/ha.php";
+	private static final String DEFAULT_URI = "http://192.96.201.102:30229";
 
 	Log logger;
 	HAMessage haMessage;
@@ -135,8 +135,8 @@ public class MainActivity extends Activity {
 			token,
 			new net.bieli.HomeAutomation.Utils.CSV()
 		);
-	
-		String uri = "http://192.96.201.102:30229";
+
+		String uri = serviceUrl;
 		haWebservice.setUri(uri);
 
 		updateRegisters();
@@ -267,8 +267,9 @@ public class MainActivity extends Activity {
 		String uri = editTextUri.getText().toString().trim();
 
         this.setServiceUrl(uri);
+        Log.v(LOG_TAG, "change URI -> '" + uri + "'");
 
-    	Log.v(LOG_TAG, "change URI -> '" + uri + "'");
+    	initHaWebservice();
     }
 
     public void onEditTokenClicked(View view) {
@@ -276,8 +277,9 @@ public class MainActivity extends Activity {
         String token = tokenTextView.getText().toString().trim();
 
         setToken(token);
-
         Log.v(LOG_TAG, "change HA TOKEN -> '" + token + "'");
+
+    	initHaWebservice();
     }
 
     private void setServiceUrl(String serviceUrl) throws URISyntaxException {

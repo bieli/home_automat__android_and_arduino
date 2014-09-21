@@ -107,27 +107,29 @@ public class HaWebserviceImpl implements HaWebservice {
     	String[] csvLine = body.split("\n");
     	for (String line : csvLine) {
     		ArrayList<String> values = (ArrayList<String>) csv.parse(line);
-
-    		UserData dataObj;
-    	    try {
-        		String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
-        	    Date datef = new Date();
-        	    SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
-        	    String stringDate = sdf.format(datef);
-    	        Date dateFormated = sdf.parse(values.get(0));
-
-        		dataObj = new UserData(
-        				dateFormated,
-        				values.get(1),
-        				values.get(2)
-        			);
-    	    } catch(ParseException e) {
-				dataObj = new UserData(
-					values.get(1),
-					values.get(2)
-				);
-    	    }
-			outputData.add(dataObj);
+    		
+    		if (values.toArray().length > 2) {
+	    		UserData dataObj;
+	    	    try {
+	        		String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";
+	        	    Date datef = new Date();
+	        	    SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+	        	    String stringDate = sdf.format(datef);
+	    	        Date dateFormated = sdf.parse(values.get(0));
+	
+	        		dataObj = new UserData(
+	        				dateFormated,
+	        				values.get(1),
+	        				values.get(2)
+	        			);
+	    	    } catch(ParseException e) {
+					dataObj = new UserData(
+						values.get(1),
+						values.get(2)
+					);
+	    	    }
+				outputData.add(dataObj);
+    		}
     	}
 
 		return outputData;
