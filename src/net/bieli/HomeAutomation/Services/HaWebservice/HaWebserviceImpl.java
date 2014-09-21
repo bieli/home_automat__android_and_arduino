@@ -85,14 +85,14 @@ public class HaWebserviceImpl implements HaWebservice {
 			datStr.getBytes()
 		);
 //        String body = httpResponse.getBodyAsString();
-
-        if (200 == httpResponse.getStatus()) {
+    	return true;
+/*        if (200 == httpResponse.getStatus()) {
         	return true;
         } else {
         	System.err.println("httpResponse.getStatus(): " + httpResponse.getStatus());
         	return false;
         }
-	}
+*/	}
 
 	@Override
 	public Set<UserData> getAll() {
@@ -100,14 +100,13 @@ public class HaWebserviceImpl implements HaWebservice {
         HttpResponse httpResponse = httpClient.get(uri, params);
         String body = httpResponse.getBodyAsString();
 
-    	System.out.println("getAll() body START... \n" + body);
-    	System.out.println("getAll() body END. \n");
+//    	System.out.println("getAll() body START... \n" + body);
+//    	System.out.println("getAll() body END. \n");
 
     	Set<UserData> outputData = new HashSet<UserData>();
     	String[] csvLine = body.split("\n");
     	for (String line : csvLine) {
     		ArrayList<String> values = (ArrayList<String>) csv.parse(line);
-
 
     		UserData dataObj;
     	    try {
@@ -149,7 +148,7 @@ public class HaWebserviceImpl implements HaWebservice {
         if (200 == httpResponse.getStatus()) {
         	return true;
         } else {
-        	System.err.println("httpResponse.getStatus(): " + httpResponse.getStatus());
+//        	System.err.println("httpResponse.getStatus(): " + httpResponse.getStatus());
         	return false;
         }
 	}

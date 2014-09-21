@@ -1,6 +1,11 @@
 package net.bieli.HomeAutomation;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import net.bieli.HomeAutomation.Services.HAMessageType;
 import net.bieli.HomeAutomation.Services.HaHttp.HAMessage;
@@ -8,15 +13,18 @@ import net.bieli.HomeAutomation.Services.HaHttp.HAServiceImpl;
 import net.bieli.HomeAutomation.Services.HaWebservice.HaWebservice;
 import net.bieli.HomeAutomation.Services.HaWebservice.HaWebserviceImpl;
 import net.bieli.HomeAutomation.Utils.DeviceIdFactory;
+import net.bieli.HomeAutomation.Services.HaWebservice.model.UserData;
 
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +52,11 @@ public class MainActivity extends Activity {
 	String serviceUrl;
 	TextView tokenTextView;
 	private String token;
+	private HaWebservice haWebservice;
+	private Set<UserData> registers;
+	final Handler myHandler = new Handler();
+	int i = 0;
+	TextView textView5;
 
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +81,33 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        
+        
+/*        Timer myTimer = new Timer();
+        myTimer.schedule(new TimerTask() {
+           @Override
+           public void run() {
+        	   UpdateGUI();
+    	   }
+        }, 0, 1000);
+*/
     }
+/*	
+	private void UpdateGUI() {
+		i++;
+		textView5 = (TextView) findViewById(R.id.textView5);
+		textView5.setText(String.valueOf(i));
+		myHandler.post(myRunnable);
+//		myRunnable.run();
+//		this.runOnUiThread(myRunnable);
+	}
+
+	final Runnable myRunnable = new Runnable() {
+		public void run() {
+			textView5 = (TextView) findViewById(R.id.textView5);
+			textView5.setText(String.valueOf(i));
+		}
+	};*/
 
     private void initializeComponents() throws URISyntaxException {
     	haMessage = new HAMessage();
@@ -90,27 +129,114 @@ public class MainActivity extends Activity {
     }
     
     private void initHaWebservice() {
-		HaWebservice haWebservice = new HaWebserviceImpl(
+		haWebservice = new HaWebserviceImpl(
 			new AndroidHttpClient(),
-			123,
-			"Test123",
+			124,
+			token,
 			new net.bieli.HomeAutomation.Utils.CSV()
 		);
 	
-		String uri = "http://127.0.0.1:1234";
-//		String uri = "http://192.96.201.102:30229"
+		String uri = "http://192.96.201.102:30229";
 		haWebservice.setUri(uri);
 
-//		UserData userData = new UserData("Relay 2", "1");
+		updateRegisters();
+    }
+    
+    private void updateRegisters() {
+    	Log.d(LOG_TAG, "updateRegisters(): START");
 
-//		Set<UserData> userDataSet = new HashSet<UserData>();
-//		userDataSet.add(userData);
-//
-//		haWebservice.setUsersDataSet(userDataSet);
+    	registers = haWebservice.getAll();
+//    	Log.d(LOG_TAG, "updateRegisters(): registers count: " + String.format("%d", registers.toArray().length));
+    	
+    	List<EditText> textEditsList = getAllTextEditsFromLayout();
+//    	Log.d(LOG_TAG, "updateRegisters(): textEditsList count: " + String.format("%d", textEditsList.toArray().length));
+    	
+    	for (UserData register : registers) {
+//	    	Log.d(LOG_TAG, "updateRegisters(): for (EditText editTextNext : textEditsList)");
+    		for (EditText editTextNext : textEditsList) {
+//    	    	Log.d(LOG_TAG, "updateRegisters(): if (register.getKey().trim() == editTextNext.getText().toString().trim())");
+//    	    	Log.d(LOG_TAG, "updateRegisters(): register.getKey().trim(): '" + register.getKey().trim() + "'");
+//    	    	Log.d(LOG_TAG, "updateRegisters(): editTextNext.getText().toString().trim(): '" + editTextNext.getText().toString().trim() + "'");
+				if (register.getKey().trim().equals(editTextNext.getText().toString().trim())) {
+		        	Log.d(LOG_TAG, "updateRegisters(): found register.getKey().trim(): '" + register.getKey().trim() +"'");
 
-//		Set<UserData> data = haWebservice.getAll();
+					Integer tb = 0;
+					switch (editTextNext.getId()) {
+						case R.id.editText1:
+				        	Log.d(LOG_TAG, "updateRegisters(): R.id.editText1");
+							tb = R.id.toggleButton1;
+							break;
+						case R.id.editText2:
+				        	Log.d(LOG_TAG, "updateRegisters(): R.id.editText2");
+							tb = R.id.toggleButton2;
+							break;
+						case R.id.editText3:
+				        	Log.d(LOG_TAG, "updateRegisters(): R.id.editText3");
+							tb = R.id.toggleButton3;
+							break;
+						case R.id.editText4:
+				        	Log.d(LOG_TAG, "updateRegisters(): R.id.editText4");
+							tb = R.id.toggleButton4;
+							break;
+						default:
+							break;
+					}
+					if (tb > 0) {
+			        	Log.d(LOG_TAG, "updateRegisters(): if (tb > 0) {");
+						ToggleButton toggleButton = (ToggleButton) findViewById(tb);
+						Boolean checked = false;
+			        	Log.d(LOG_TAG, "updateRegisters(): register.getValue().trim(): '" + register.getValue().trim() + "'");
+						if (register.getValue().trim().equals("1")) {						
+							checked = true;
+				        	Log.d(LOG_TAG, "updateRegisters(): tb checked = true");
+						} else {
+				        	Log.d(LOG_TAG, "updateRegisters(): tb checked = false");
+						}
+						toggleButton.setChecked(checked);
+					}
+				}
+    		}
+    	}
 
-//		haWebservice.put("Relay 2", "1");
+    	Log.d(LOG_TAG, "updateRegisters(): END");
+    }
+    
+    private List<EditText> getAllTextEditsFromLayout() {
+    	Log.d(LOG_TAG, "getAllTextEditsFromLayout(): START");
+    	List<EditText> output = new ArrayList<EditText>();
+
+    	EditText editText1 = (EditText) findViewById(R.id.editText1);
+    	output.add(editText1);
+    	EditText editText2 = (EditText) findViewById(R.id.editText2);
+    	output.add(editText2);
+    	EditText editText3 = (EditText) findViewById(R.id.editText3);
+    	output.add(editText3);
+    	EditText editText4 = (EditText) findViewById(R.id.editText4);
+    	output.add(editText4);
+
+/*
+    	ViewGroup parent = (ViewGroup) findViewById(R.layout.activity_main);
+    	Integer childs = parent.getChildCount();
+//    	Log.d(LOG_TAG, "getAllTextEditsFromLayout() parent.getChildCount(): " + String.format("%d", childs));
+
+    	for(int i = 0; i < childs; i++) {
+    		View singleChild = parent.getChildAt(i);
+    	    if (singleChild instanceof EditText) {
+    	    	Log.d(LOG_TAG, "getAllTextEditsFromLayout() singleChild R.id: " + String.valueOf(singleChild.getId()));
+
+    	        EditText mEditText = (EditText) singleChild;
+
+    	        if(mEditText.getText().length() >  0){
+    	            Log.d(LOG_TAG, "getAllTextEditsFromLayout(): EditText is NOT NULL - value: '" + mEditText.getText().toString() + "'");
+    	        	output.add(mEditText);
+    	        } else{
+    	            Log.d(LOG_TAG, "getAllTextEditsFromLayout(): EditText is NULL");
+    	        }
+    	    }
+    	}
+*/
+    	Log.d(LOG_TAG, "getAllTextEditsFromLayout(): END");
+    	return output;
     }
 
     @Override
@@ -185,7 +311,45 @@ public class MainActivity extends Activity {
 	}
 
     private Boolean doHAServiceAction(View view, byte mask) {
+    	boolean on = ((ToggleButton) view).isChecked();
+
+  //TODO: ------------ refactor
+          String key = "-";
+          switch (mask) {
+          	case HAMessageType.DIGITAL_DEVICE_0:
+          		key = "Relay 1";
+          		break;
+          	case HAMessageType.DIGITAL_DEVICE_1:
+          		key = "Relay 2";
+          		break;
+          	case HAMessageType.DIGITAL_DEVICE_2:
+          		key = "Night Lamp 1";
+          		break;
+          	case HAMessageType.DIGITAL_DEVICE_3:
+          		key = "Night Lamp 2";
+          		break;
+          	default:
+                  Log.e(LOG_TAG, "doHAServiceAction UNKNOWN mask: '" + String.format("%s", mask) + "'");
+          		break;
+          }
+
+          String val = "0";
+          if (on) {
+          	val = "1";
+          }
+
+  		haWebservice.put(key, val);
+  		
+		updateRegisters();
+
+  		return true;
+  //TODO: ------------ refactor
+
+      		
+
+/*
         boolean on = ((ToggleButton) view).isChecked();
+      		
         byte value = 0;
 
         Log.v(LOG_TAG, "doHAServiceAction on: '" + String.format("%s", on) + "'");
@@ -212,6 +376,7 @@ public class MainActivity extends Activity {
         view.setClickable(true);
 
         return sendHAMessageForOutputDigital(haMessage);
+*/
 	}
 
 	private Boolean sendHAMessageForOutputDigital(HAMessage haMessage) {
